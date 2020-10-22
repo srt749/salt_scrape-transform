@@ -23,12 +23,16 @@ if not os.path.exists(download_path):
 prefs = {"download.default_directory": download_path}
 chromeOptions = webdriver.ChromeOptions()
 chromeOptions.add_experimental_option('prefs', prefs)
+chromeOptions.add_argument('--no-sandbox')
+chromeOptions.add_argument('window-size=1420,1080')
+chromeOptions.add_argument('--headless')
+chromeOptions.add_argument('--disable-gpu')
 
 driver = webdriver.Chrome(executable_path=driver_path, options=chromeOptions)
 
 now = datetime.datetime.now()
 
-newfilename = now.strftime("%Y-%m-%d_%H.%M.%S") + 'SubmittedReport'
+newfilename = now.strftime("%Y-%m-%d_%H.%M.%S") + '-SubmittedReport.csv'
 
 try: 
     os.rename(r'Submitted+Reports.csv', newfilename)
