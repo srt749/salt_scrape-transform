@@ -12,6 +12,20 @@ TODO:
 Make an executable with args e.g. Myexe.exe -u nick -p 123456 —enddate 2020-05-05
 Let users define start and end dates
 '''
+
+driver_path = ('chromedriver.exe')
+
+download_path = os.getcwd()
+
+if not os.path.exists(download_path):
+    os.makedirs(download_path)
+
+prefs = {"download.default_directory": download_path}
+chromeOptions = webdriver.ChromeOptions()
+chromeOptions.add_experimental_option('prefs', prefs)
+
+driver = webdriver.Chrome(executable_path=driver_path, options=chromeOptions)
+
 now = datetime.datetime.now()
 
 newfilename = now.strftime("%Y-%m-%d_%H.%M.%S") + 'SubmittedReport'
@@ -22,7 +36,6 @@ except:
     pass
 
 def get_salt_data(user:str ,pwd:str) -> None:
-    driver = webdriver.Chrome('chromedriver.exe')
     driver.get("https://www.cnphi-rcrsp.ca/cnphi/faces/login.xhtml?lang=en&jftfdi=&jffi=%2Flogin.xhtml")
     username = driver.find_element_by_id("inputUserName") 
     username.send_keys(user)
@@ -40,6 +53,8 @@ if __name__ == "__main__":
     get_salt_data(user, pwd)
 
 time.sleep(5)
+
+driver.quit()
 
 # Data to be transformed
 df = pd.read_csv('Submitted+Reports.csv', encoding='latin-1')
